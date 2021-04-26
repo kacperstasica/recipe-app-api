@@ -1,11 +1,12 @@
+from django.contrib import admin
 from django.contrib.admin import register
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from . import models
+from .models import User, Tag
 
 
-@register(models.User)
+@register(User)
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
     list_display = ('email', 'name')
@@ -24,3 +25,6 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')
         }),
     )
+
+
+admin.site.register(Tag)
