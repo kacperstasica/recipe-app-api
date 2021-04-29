@@ -1,6 +1,6 @@
 import factory.fuzzy
 
-from core.models import User
+from core.models import User, Ingredient
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -8,3 +8,10 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = User
+
+
+class IngredientFactory(factory.django.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = Ingredient

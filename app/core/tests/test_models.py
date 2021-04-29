@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ..models import Tag
+from ..models import Tag, Ingredient
+from users.factories import UserFactory
 
 
 def sample_user(email='test@wp.pl', password='testpass'):
@@ -11,13 +12,18 @@ def sample_user(email='test@wp.pl', password='testpass'):
 
 class ModelTests(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = UserFactory()
+
     def test_create_user_with_email_successfull(self):
         email = 'test@laboratorium.ee'
         password = 'Testpass123'
-        user = get_user_model().objects.create_user(
+        user = UserFactory(
             email=email,
-            password=password
         )
+        user.set_password(password)
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
@@ -55,3 +61,12 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(tag), tag.name)
+
+    def test_ingredient_str(self):
+        """Test the ingredient string repr"""
+        ingredient = Ingredient.objects.create(
+            user=self.user,
+            name='Cucumber',
+        )
+
+        self.assertEqual(str(ingredient), ingredient.name)
